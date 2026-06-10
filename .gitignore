@@ -1,30 +1,67 @@
-# Python
+# Python bytecode / caches
 __pycache__/
 *.py[cod]
+*$py.class
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.tox/
+.nox/
+.ipynb_checkpoints/
+
+# Virtual environments / local dependency installs
 .venv/
 venv/
+env/
+ENV/
+pip-wheel-metadata/
 
-# Generated trading outputs
+# Build / packaging / coverage
+build/
+dist/
+*.egg-info/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Generated DailyEdge outputs and runtime journals
 output/*
 !output/.gitkeep
 journal/*
 !journal/.gitkeep
+logs/
 *.log
+*.pid
 
-# Local/secrets
+# Local market-data caches / databases
+cache/
+data/
+*.db
+*.sqlite
+*.sqlite3
+*.parquet.tmp
+
+# Local secrets and credentials
 .env
 .env.*
+!.env.example
 *.secret
+*.secrets
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
 
-# OS/editor
+# OS / editor
 .DS_Store
+Thumbs.db
 .idea/
 .vscode/
+*.swp
+*.swo
 
-# Docker/runtime
-*.pid
-.coverage
-htmlcov/
+# Docker/local runtime
+.docker-data/
