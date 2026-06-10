@@ -5,6 +5,7 @@ yfinance
 pandas
 numpy
 matplotlib
+Pillow
 pytest
 httpx
 lxml
