@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Generated trading outputs
+output/*
+!output/.gitkeep
+journal/*
+!journal/.gitkeep
+*.log
+
+# Local/secrets
+.env
+.env.*
+*.secret
+
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+
+# Docker/runtime
+*.pid
+.coverage
+htmlcov/

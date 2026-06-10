@@ -1,0 +1,28 @@
+{
+  "name": "core_semis_tactic_v1",
+  "tickers": ["NVDA", "MU", "SNDK"],
+  "period": "2y",
+  "interval": "1d",
+  "primary_setup": "breakout_20",
+  "disabled_setups": {
+    "ema_cross": "Retired for this watchlist until redesigned; prior 2y NVDA+MU+SNDK test had negative cost-adjusted expectancy.",
+    "pullback_trend": "Probation/disabled until filters prove it beats baseline."
+  },
+  "intraday_setup": "vwap_reclaim",
+  "stop_atr": 1.5,
+  "rr": 2.0,
+  "time_bars": 20,
+  "min_oos_samples": 100,
+  "max_signal_age_bars": 5,
+  "account": null,
+  "beta": {
+    "NVDA": 1.7,
+    "MU": 1.5,
+    "SNDK": 1.8
+  },
+  "notes": [
+    "Breakout_20 is the only enabled daily tactic by default because it was the strongest verified region on this watchlist.",
+    "All auto/ATR-structured gates are probation-only until replaced with structural stop levels.",
+    "Monte Carlo chart simulation is context only, not confidence scoring."
+  ]
+}

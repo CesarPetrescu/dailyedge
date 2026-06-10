@@ -1,0 +1,27 @@
+{
+  "name": "universe_scanner_v1",
+  "default_universe": "liquid_ai_semis",
+  "period": "1y",
+  "evidence_period": "2y",
+  "interval": "1d",
+  "primary_setup": "breakout_20_rr3",
+  "stop_atr": 1.5,
+  "rr": 3.0,
+  "min_avg_dollar_vol": 50000000,
+  "max_rsi_no_chase": 78,
+  "max_ext_pct_vs_sma50": 25,
+  "candidate_limit": 25,
+  "watcher_export_limit": 10,
+  "universes": {
+    "core_semis": ["NVDA", "MU", "SNDK"],
+    "liquid_ai_semis": ["NVDA", "MU", "SNDK", "AMD", "AVGO", "TSM", "ASML", "AMAT", "LRCX", "KLAC", "MRVL", "ARM", "SMCI", "DELL", "VRT", "ANET", "CRDO", "COHR", "INTC", "QCOM", "TXN", "ON", "MPWR", "MCHP", "ADI"],
+    "mega_tech": ["NVDA", "MSFT", "AAPL", "AMZN", "GOOGL", "META", "TSLA", "AVGO", "NFLX", "ORCL", "CRM", "NOW", "ADBE", "PLTR", "CRWD"],
+    "risk_context": ["SPY", "QQQ", "SMH", "SOXX", "IWM", "DIA"]
+  },
+  "notes": [
+    "Scanner finds candidates; final trade still requires full analyze_ticker + chart_simulation + live research.",
+    "Round 5 forward experiment: breakout_20_rr3, stop unchanged 1.5xATR, target 3R; ema_cross remains disabled pending reproducibility/margin tests.",
+    "Universe list is a model parameter and must be printed/versioned with evidence tables.",
+    "Exports top candidates to output/universe_scanner_latest.json and output/watcher_candidates.json."
+  ]
+}

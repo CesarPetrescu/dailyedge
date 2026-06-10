@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DailyEdge v2 · Operator Explainer</title>
+  <style>
+    :root { color-scheme: dark; --bg:#08111f; --card:#111c2f; --muted:#8da2bf; --text:#edf5ff; --teal:#31d0c6; --coral:#ff7b72; --purple:#b18cff; --line:#263653; --good:#56d364; --warn:#f2cc60; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif; background: radial-gradient(circle at 20% 0%, #142443 0%, var(--bg) 45%, #050910 100%); color:var(--text); }
+    main { max-width:1180px; margin:0 auto; padding:32px 18px 60px; }
+    header { padding:28px; border:1px solid var(--line); border-radius:28px; background:linear-gradient(135deg, rgba(49,208,198,.12), rgba(177,140,255,.08)); box-shadow:0 20px 80px rgba(0,0,0,.35); }
+    h1 { margin:0 0 8px; font-size:clamp(2rem,5vw,4rem); line-height:.95; letter-spacing:-.05em; }
+    h2 { margin:0 0 16px; font-size:1.45rem; }
+    h3 { margin:0 0 8px; }
+    p { color:#cdd9e8; line-height:1.6; }
+    a { color:var(--teal); }
+    .sub { color:var(--muted); font-size:1rem; }
+    .pillbar { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .pill { padding:8px 12px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,.04); color:#dce9ff; font-size:.92rem; }
+    .grid { display:grid; gap:18px; }
+    .cols3 { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .cols2 { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    @media (max-width:850px){ .cols3,.cols2{grid-template-columns:1fr;} header{padding:22px;} }
+    section { margin-top:22px; }
+    .card { border:1px solid var(--line); border-radius:22px; background:rgba(17,28,47,.84); padding:20px; box-shadow:0 12px 40px rgba(0,0,0,.22); }
+    .scout { border-top:4px solid var(--teal); }
+    .human { border-top:4px solid var(--coral); }
+    .memory { border-top:4px solid var(--purple); }
+    .metric { font-size:2rem; font-weight:800; letter-spacing:-.04em; }
+    .muted { color:var(--muted); }
+    .flow { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    @media (max-width:950px){ .flow{grid-template-columns:1fr 1fr;} }
+    @media (max-width:560px){ .flow{grid-template-columns:1fr;} }
+    .step { position:relative; min-height:142px; }
+    .num { display:inline-grid; place-items:center; width:32px; height:32px; border-radius:50%; background:#203758; color:var(--teal); font-weight:800; margin-bottom:10px; }
+    .term { text-decoration: underline dotted var(--teal) 2px; text-underline-offset: 4px; cursor:help; color:#fff; }
+    .tooltip { position:fixed; z-index:20; max-width:330px; border:1px solid #3b5278; background:#0d1728; color:#ecf5ff; border-radius:16px; padding:14px; box-shadow:0 22px 80px rgba(0,0,0,.55); display:none; }
+    .tooltip strong { color:var(--teal); display:block; margin-bottom:6px; }
+    .tooltip small { color:var(--muted); display:block; margin-top:8px; line-height:1.45; }
+    .watcher { display:flex; justify-content:space-between; gap:12px; border-bottom:1px solid var(--line); padding:10px 0; }
+    .watcher:last-child{border-bottom:0;}
+    code, pre { background:#07101d; border:1px solid var(--line); border-radius:12px; color:#d8e8ff; }
+    code { padding:2px 6px; }
+    pre { padding:14px; overflow:auto; }
+    .status-ok { color:var(--good); }
+    .status-warn { color:var(--warn); }
+    .contract li { margin:7px 0; }
+    .footer { text-align:center; margin-top:30px; color:var(--muted); font-size:.92rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="sub">DailyEdge v2 · operator explainer · smart dictionary edition</div>
+      <h1>The alert machine, explained.</h1>
+      <p>Plain words first, precision on demand. Any <span class="term" data-term="breakout">dotted word</span> is jargon — hover or tap for a dictionary card.</p>
+      <div class="pillbar">
+        <span class="pill">Mode: <b class="status-ok">alert-only</b></span>
+        <span class="pill">No broker execution</span>
+        <span class="pill">Human buys/skips</span>
+        <span class="pill">Rule: <b id="setup">loading…</b></span>
+        <span class="pill">Universe: <b id="universe">loading…</b></span>
+      </div>
+    </header>
+
+    <section class="grid cols3">
+      <div class="card scout">
+        <h2>The scout</h2>
+        <p>Checks the stock universe and sets a <span class="term" data-term="tripwire">tripwire</span> where a valid <span class="term" data-term="breakout">breakout</span> would start.</p>
+      </div>
+      <div class="card human">
+        <h2>The referee</h2>
+        <p>Blocks bad plans by checking <span class="term" data-term="R:R">R:R</span>, <span class="term" data-term="cost_R">cost_R</span>, the <span class="term" data-term="stop loss">stop</span>, earnings/risk limits, and <span class="term" data-term="regime">regime</span>.</p>
+      </div>
+      <div class="card memory">
+        <h2>The notebook</h2>
+        <p>The <span class="term" data-term="ledger">ledger</span> records signals/outcomes. Only real logged trades can promote sizing.</p>
+      </div>
+    </section>
+
+    <section class="grid cols2">
+      <div class="card">
+        <h2>Status right now</h2>
+        <div class="grid cols2">
+          <div><div class="metric" id="armedCount">—</div><div class="muted">armed watchers</div></div>
+          <div><div class="metric" id="universeCount">—</div><div class="muted">stocks watched</div></div>
+        </div>
+        <div id="watchers" style="margin-top:14px"></div>
+      </div>
+      <div class="card">
+        <h2>The contract</h2>
+        <ul class="contract">
+          <li><b>No auto-buy.</b> This API has no order endpoint.</li>
+          <li>Alerts are trade plans, not guarantees.</li>
+          <li>Every <span class="term" data-term="fire">fire</span> must <span class="term" data-term="re-stamp">re-stamp</span> with signal-bar <span class="term" data-term="ATR">ATR</span>.</li>
+          <li><span class="term" data-term="backtest">Backtests</span> can reject; only the <span class="term" data-term="ledger">ledger</span> can promote.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>The loop</h2>
+      <div class="flow">
+        <div class="step"><span class="num">1</span><h3>Scan</h3><p>Rank names by <span class="term" data-term="relative strength">relative strength</span>, <span class="term" data-term="relative volume">relative volume</span>, and breakout proximity.</p></div>
+        <div class="step"><span class="num">2</span><h3>Arm</h3><p>Store exact triggers in `armed_watchers.json`. No guessing while price is below trigger.</p></div>
+        <div class="step"><span class="num">3</span><h3>Fire</h3><p>If crossed, re-measure volatility and build entry/stop/target using fresh data.</p></div>
+        <div class="step"><span class="num">4</span><h3>Referee</h3><p>Pass/fail rules decide whether it is actionable, probation-only, or no-go.</p></div>
+        <div class="step"><span class="num">5</span><h3>Human</h3><p>You decide. If taking it, tiny <span class="term" data-term="tryout">tryout</span> size and stop first.</p></div>
+        <div class="step"><span class="num">6</span><h3>Record</h3><p>Taken or skipped, every signal belongs in the notebook.</p></div>
+        <div class="step"><span class="num">7</span><h3>Grade</h3><p>The evidence machine uses <span class="term" data-term="Wilson floor">Wilson floor</span> and compares against the <span class="term" data-term="baseline">baseline</span>.</p></div>
+        <div class="step"><span class="num">8</span><h3>Promote/cut</h3><p>Forward results decide playing time. Bad forward edge retires the rule.</p></div>
+      </div>
+    </section>
+
+    <section class="grid cols2">
+      <div class="card">
+        <h2>Agent API</h2>
+        <pre>GET /api/state
+GET /api/scanner/latest
+GET /api/evidence/latest
+GET /api/glossary
+GET /api/agent/context</pre>
+        <p class="muted">OpenAPI docs: <a href="/docs">/docs</a></p>
+      </div>
+      <div class="card">
+        <h2>Glossary</h2>
+        <div id="glossaryList" class="muted">loading glossary…</div>
+      </div>
+    </section>
+
+    <div class="footer">DailyEdge v2 · analytical framework only · you execute, you own the trades · not financial advice</div>
+  </main>
+  <div id="tooltip" class="tooltip"></div>
+  <script>
+    const dictionary = new Map();
+    const tip = document.getElementById('tooltip');
+
+    function showTip(el){
+      const item = dictionary.get(el.dataset.term);
+      if(!item) return;
+      tip.innerHTML = `<strong>${item.term}</strong>${item.plain}<small>${item.precise}</small>`;
+      const r = el.getBoundingClientRect();
+      tip.style.left = Math.min(window.innerWidth - 350, Math.max(12, r.left)) + 'px';
+      tip.style.top = Math.min(window.innerHeight - 170, r.bottom + 10) + 'px';
+      tip.style.display = 'block';
+    }
+    function hideTip(){ tip.style.display='none'; }
+    document.addEventListener('keydown', e => { if(e.key === 'Escape') hideTip(); });
+    document.addEventListener('click', e => { if(!e.target.classList.contains('term')) hideTip(); });
+
+    async function load(){
+      const [stateRes, glossRes] = await Promise.all([fetch('/api/state'), fetch('/api/glossary')]);
+      const state = await stateRes.json();
+      const gloss = await glossRes.json();
+      gloss.terms.forEach(t => dictionary.set(t.term, t));
+      document.querySelectorAll('.term').forEach(el => {
+        el.addEventListener('mouseenter', () => showTip(el));
+        el.addEventListener('mouseleave', hideTip);
+        el.addEventListener('click', e => { e.stopPropagation(); showTip(el); });
+      });
+      document.getElementById('setup').textContent = state.primary_setup || 'unknown';
+      document.getElementById('universe').textContent = `${state.universe} (${state.universe_count})`;
+      document.getElementById('armedCount').textContent = state.armed_watchers.length;
+      document.getElementById('universeCount').textContent = state.universe_count;
+      document.getElementById('watchers').innerHTML = state.armed_watchers.length ? state.armed_watchers.map(w => `
+        <div class="watcher"><div><b>${w.ticker}</b><div class="muted">${w.rule || w.setup || ''}</div></div><div>trigger <b>${w.trigger}</b><div class="muted">target ${w.target_projection ?? w.target ?? '—'}</div></div></div>
+      `).join('') : '<p class="muted">No armed watchers right now.</p>';
+      document.getElementById('glossaryList').innerHTML = gloss.terms.map(t => `<span class="pill term" data-term="${t.term}">${t.term}</span>`).join(' ');
+      document.querySelectorAll('#glossaryList .term').forEach(el => {
+        el.addEventListener('mouseenter', () => showTip(el));
+        el.addEventListener('mouseleave', hideTip);
+        el.addEventListener('click', e => { e.stopPropagation(); showTip(el); });
+      });
+    }
+    load().catch(err => {
+      document.getElementById('watchers').innerHTML = `<p class="status-warn">Could not load API state: ${err}</p>`;
+    });
+  </script>
+</body>
+</html>

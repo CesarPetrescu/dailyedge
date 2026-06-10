@@ -1,0 +1,12 @@
+fastapi
+uvicorn[standard]
+pydantic
+yfinance
+pandas
+numpy
+matplotlib
+pytest
+httpx
+lxml
+html5lib
+beautifulsoup4

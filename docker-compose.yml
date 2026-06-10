@@ -1,0 +1,13 @@
+services:
+  dailyedge:
+    build: .
+    container_name: dailyedge
+    ports:
+      - "8000:8000"
+    environment:
+      - MPLBACKEND=Agg
+    volumes:
+      - ./output:/app/output
+      - ./journal:/app/journal
+      - ./config:/app/config
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
