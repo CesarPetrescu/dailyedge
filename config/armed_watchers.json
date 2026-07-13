@@ -98,5 +98,5 @@
   ],
   "generated_at": "2026-06-10T14:37:09.931180+00:00",
   "primary_setup": "breakout_20_rr3",
-  "source": "/root/trading-agents/dailyedge/output/watcher_candidates.json"
+  "source": "output/watcher_candidates.json"
 }

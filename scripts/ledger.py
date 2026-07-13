@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+OUTPUT_DIR = Path(__file__).resolve().parents[1] / "output"
+
 LEDGER_COLUMNS = [
     "ts", "ticker", "rule", "side", "price", "taken", "entry", "stop", "target",
     "exit", "outcome_R", "MAE_R", "MFE_R", "regime", "confidence", "sector", "notes",
@@ -125,6 +127,6 @@ def concentration_warning(rows: list[dict[str, Any]], max_per_cluster: int = 2) 
 if __name__ == "__main__":
     import argparse, json
     ap = argparse.ArgumentParser()
-    ap.add_argument("path", nargs="?", default="/root/trading-agents/ultra-daytrader/output/alerts_log.csv")
+    ap.add_argument("path", nargs="?", default=str(OUTPUT_DIR / "alerts_log.csv"))
     args = ap.parse_args()
     print(json.dumps({"risk_state": risk_state(args.path), "first_rows": read_rows(args.path, 5)}, indent=2))

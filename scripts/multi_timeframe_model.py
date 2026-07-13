@@ -18,6 +18,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+OUTPUT_DIR = Path(__file__).resolve().parents[1] / "output"
+
 TIMEFRAMES: dict[str, tuple[str, str]] = {
     "15m": ("60d", "15m"),
     "1h": ("730d", "1h"),
@@ -664,7 +666,7 @@ def run_model(
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("ticker")
-    ap.add_argument("--outdir", default="/root/trading-agents/ultra-daytrader/output")
+    ap.add_argument("--outdir", default=str(OUTPUT_DIR))
     ap.add_argument("--horizon", type=int, default=5, help="Backtest holding horizon in daily bars")
     ap.add_argument("--min-samples", type=int, default=20)
     ap.add_argument("--validation", choices=["walk-forward", "holdout"], default="walk-forward")

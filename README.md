@@ -97,8 +97,7 @@ docker-compose.yml    Local Docker runner
 ## Quick start: local Python
 
 ```bash
-cd /root/trading-agents/dailyedge
-
+# Run from the repository root.
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
@@ -120,8 +119,7 @@ Open:
 ## Quick start: Docker
 
 ```bash
-cd /root/trading-agents/dailyedge
-
+# Run from the repository root.
 docker compose up --build
 ```
 

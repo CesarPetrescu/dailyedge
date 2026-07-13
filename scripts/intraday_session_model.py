@@ -12,6 +12,8 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+OUTPUT_DIR = Path(__file__).resolve().parents[1] / "output"
+
 
 def safe_float(x: Any, digits: int = 4):
     try:
@@ -195,7 +197,7 @@ def main() -> None:
     ap.add_argument("--period", default="10d")
     ap.add_argument("--interval", default="15m")
     ap.add_argument("--opening-range-minutes", type=int, default=60)
-    ap.add_argument("--outdir", default="/root/trading-agents/ultra-daytrader/output")
+    ap.add_argument("--outdir", default=str(OUTPUT_DIR))
     args = ap.parse_args()
     try:
         df = fetch_intraday(args.ticker.upper(), args.period, args.interval)

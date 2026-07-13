@@ -16,6 +16,8 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
+OUTPUT_DIR = Path(__file__).resolve().parents[1] / "output"
+
 
 def ema(close: pd.Series, span: int) -> pd.Series:
     return close.ewm(span=span, adjust=False).mean()
@@ -94,7 +96,7 @@ def main() -> None:
     ap.add_argument("--days", type=int, default=30)
     ap.add_argument("--paths", type=int, default=5000)
     ap.add_argument("--backend", choices=["auto", "cpu", "gpu"], default="auto")
-    ap.add_argument("--outdir", default="/root/trading-agents/ultra-daytrader/output")
+    ap.add_argument("--outdir", default=str(OUTPUT_DIR))
     ap.add_argument("--seed", type=int, default=42)
     args = ap.parse_args()
 
